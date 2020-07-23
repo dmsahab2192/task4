@@ -1,0 +1,13 @@
+resource "aws_instance" "bastion-host" {
+	ami 		        = "ami-0732b62d310b80e97"
+	instance_type 		= "t2.micro"
+	key_name 		= "dmkey"
+	availability_zone 	= "ap-south-1a"
+	subnet_id 		= aws_subnet.public-subnet.id
+	security_groups 	= [ aws_security_group.admin-bastion.id , ]
+
+
+	tags = {
+		Name = "bastion-host"
+    }
+}
