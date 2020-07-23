@@ -1,0 +1,30 @@
+resource "aws_nat_gateway" "nat-gateway" {
+	depends_on			= [ aws_subnet.public-subnet , aws_subnet.private-subnet ]
+
+
+	allocation_id 		= aws_eip.eip.id
+	subnet_id     		= aws_subnet.public-subnet.id
+
+
+	tags = {
+		Name = "nat-gateway"
+	}
+}
+
+
+# Creating Route Table for our Nat Gateway
+
+
+resource "aws_route_table" "deepak-nat-rt" {
+	depends_on = [ aws_vpc.deepak-vpc , aws_nat_gateway.nat-gateway ]
+	
+	vpc_id 	 = aws_vpc.deepak-vpc.id
+	route {
+		cidr_block = "0.0.0.0/0"
+		gateway_id = aws_nat_gateway.nat-gateway.id
+    }
+  
+	tags = {
+		Name = "deepak-nat-rt"
+	}
+}
