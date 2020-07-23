@@ -1,0 +1,9 @@
+# Associating route table to private subnet
+
+
+resource "aws_route_table_association" "nat-rt" {
+	depends_on			= [ aws_route_table.deepak-nat-rt , ]
+	
+	subnet_id   = aws_subnet.private-subnet.id
+	route_table_id = aws_route_table.deepak-nat-rt.id
+}
